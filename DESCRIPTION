@@ -17,11 +17,13 @@ Imports:
     DESeq2,
     clusterProfiler,
     dplyr,
+    magrittr,
     methods,
     rlang,
     utils,
     stats,
-    magrittr
+    ggplot2,
+    enrichplot
 Suggests:
     org.Hs.eg.db,
     org.Mm.eg.db,
