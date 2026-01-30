@@ -1,0 +1,56 @@
+url: https://ghsamuel.github.io/easyGSEA/
+
+template:
+  bootstrap: 5
+  bootswatch: united
+  bslib:
+    primary: "#0051BA"
+    border-radius: 0.5rem
+    font_scale: 1.1
+
+home:
+  title: easyGSEA • Simplified Gene Set Enrichment Analysis
+  description: >
+    User-friendly wrapper for GSEA that handles DESeq2 results directly,
+    auto-detects organisms, and always uses adjusted p-values correctly.
+  sidebar:
+    structure: [links, license, citation, authors, dev]
+
+navbar:
+  structure:
+    left:  [intro, reference, articles]
+    right: [search, github]
+  components:
+    home:
+      icon: fas fa-home fa-lg
+      href: index.html
+    reference:
+      text: Reference
+      href: reference/index.html
+    articles:
+      text: Tutorials
+      menu:
+      - text: Getting Started
+        href: articles/quickstart.html
+    github:
+      icon: fab fa-github fa-lg
+      href: https://github.com/ghsamuel/easyGSEA
+
+reference:
+- title: Main Functions
+  desc: Core GSEA workflow functions
+  contents:
+  - gsea_from_deseq
+  - compare_gsea
+
+- title: Plotting
+  desc: Visualization functions
+  contents:
+  - plot_gsea
+  - plot_comparison
+  - plot_all
+
+footer:
+  structure:
+    left: developed_by
+    right: built_with
