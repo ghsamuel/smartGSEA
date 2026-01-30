@@ -1,13 +1,30 @@
 Package: easyGSEA
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Title: Simplified Gene Set Enrichment Analysis from DESeq2
+Version: 0.1.0
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+    person("Glady", "Hazitha Samuel", , "glady.samuel@uconn.edu", role = c("aut", "cre"))
+Description: A user-friendly wrapper for clusterProfiler that simplifies GSEA 
+    workflows. Handles DESeq2 results directly, auto-detects organisms, properly 
+    filters on adjusted p-values, and provides easy comparison functions. Supports 
+    both model organisms and custom pathway annotations for non-model organisms.
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
 URL: https://github.com/ghsamuel/easyGSEA
 BugReports: https://github.com/ghsamuel/easyGSEA/issues
+Imports:
+    DESeq2,
+    clusterProfiler,
+    dplyr,
+    ggplot2,
+    methods
+Suggests:
+    org.Hs.eg.db,
+    org.Mm.eg.db,
+    org.Rn.eg.db,
+    testthat,
+    knitr,
+    rmarkdown,
+    patchwork
+VignetteBuilder: knitr
