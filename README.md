@@ -244,10 +244,7 @@ Export to PDF/PNG
 
 <div align="center">
 
-> *"After the 100th time explaining why someone's GSEA had 1500 significant pathways,*  
-> *I decided to build the tool I wish I had when I started."*
-> 
-> **— Glady Hazitha Samuel**
+
 
 </div>
 
@@ -282,18 +279,27 @@ We welcome contributions! Found a bug? Have a feature request?
 ## 📖 Citation
 
 If easyGSEA helps your research, please cite:
+
+**easyGSEA:**
+> Samuel GH (2026). easyGSEA: Simplified Gene Set Enrichment Analysis.  
+> R package version 0.1.0. https://github.com/ghsamuel/easyGSEA
+
+**clusterProfiler:**
+> Yu G, Wang LG, Han Y, He QY (2012). "clusterProfiler: an R package for comparing biological themes among gene clusters."  
+> *OMICS: A Journal of Integrative Biology*, 16(5), 284-287. doi:10.1089/omi.2011.0118
+
+<details>
+
+<summary>BibTeX format</summary>
 ```bibtex
 @Manual{samuel2026easygsea,
   title = {easyGSEA: Simplified Gene Set Enrichment Analysis},
   author = {Glady Hazitha Samuel},
   year = {2026},
   note = {R package version 0.1.0},
-  url = {https://github.com/ghsamuel/easyGSEA},
+  url = {https://github.com/ghsamuel/easyGSEA}
 }
-```
 
-**Please also cite clusterProfiler:**
-```bibtex
 @Article{yu2012clusterprofiler,
   title = {clusterProfiler: an R package for comparing biological themes among gene clusters},
   author = {Guangchuang Yu and Li-Gen Wang and Yanyan Han and Qing-Yu He},
@@ -302,9 +308,11 @@ If easyGSEA helps your research, please cite:
   volume = {16},
   number = {5},
   pages = {284-287},
-  doi = {10.1089/omi.2011.0118},
+  doi = {10.1089/omi.2011.0118}
 }
 ```
+
+</details>
 
 <br>
 
