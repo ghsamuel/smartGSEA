@@ -1,5 +1,7 @@
 Package: easyGSEA
 Title: Simplified Gene Set Enrichment Analysis from DESeq2
+URL: https://ghsamuel.github.io/easyGSEA
+BugReports: https://github.com/ghsamuel/easyGSEA/issues
 Version: 0.1.0
 Authors@R: 
     person("Glady", "Hazitha Samuel", , "glady.samuel@uconn.edu", role = c("aut", "cre"))
