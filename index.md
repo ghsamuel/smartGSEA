@@ -1,0 +1,304 @@
+# smartGSEA
+
+![smartGSEA](https://img.shields.io/badge/smartGSEA-v0.1.0-2C3E50?style=for-the-badge&logo=r&logoColor=white)
+
+### Gene Set Enrichment Analysis that just works.
+
+**One function. Correct statistics. Zero configuration.**
+
+  
+
+[![Lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange?style=flat-square)](https://lifecycle.r-lib.org/articles/stages.html)
+[![MIT
+License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](https://ghsamuel.github.io/easyGSEA/LICENSE)
+[![R ≥
+4.0](https://img.shields.io/badge/R-%E2%89%A5%204.0-276DC3?style=flat-square&logo=r)](https://www.r-project.org/)
+
+[Documentation](https://ghsamuel.github.io/smartGSEA/) · [Quick
+Start](https://ghsamuel.github.io/smartGSEA/articles/quickstart.html) ·
+[Report Issue](https://github.com/ghsamuel/smartGSEA/issues)
+
+  
+
+------------------------------------------------------------------------
+
+## Overview
+
+smartGSEA eliminates the confusion in Gene Set Enrichment Analysis.
+Built for reproducibility, designed for clarity.
+
+``` r
+# Standard workflow: 50+ lines of preprocessing
+# smartGSEA: One line
+results <- gsea_from_deseq(dds, contrast = c("condition", "treated", "control"))
+```
+
+**What happened:** - Organism auto-detected from gene IDs - Gene ID
+conversion handled automatically  
+- Ranked by log₂ fold change - **Filtered on adjusted p-values** (FDR \<
+0.05) - Ready for publication
+
+  
+
+## The Problem
+
+[TABLE]
+
+  
+
+## Installation
+
+``` r
+# Install from GitHub
+devtools::install_github("ghsamuel/smartGSEA")
+
+# Install organism databases
+BiocManager::install("org.Hs.eg.db")  # Human (required for auto-detection)
+BiocManager::install("org.Mm.eg.db")  # Mouse
+BiocManager::install("org.Rn.eg.db")  # Rat
+```
+
+  
+
+## Quick Start
+
+### Basic Analysis
+
+``` r
+library(smartGSEA)
+
+# Run GSEA
+results <- gsea_from_deseq(dds, contrast = c("treatment", "drug", "vehicle"))
+
+# Visualize top pathways
+plot_gsea(results, top_n = 20)
+
+# Export all plots
+plot_all(results, output_dir = "gsea_results")
+```
+
+### Compare Experimental Conditions
+
+A common use case: comparing biological replicates, treatment arms, or
+developmental stages.
+
+``` r
+# Run GSEA on both conditions
+cond1 <- gsea_from_deseq(dds, contrast = c("treatment", "A", "control"))
+cond2 <- gsea_from_deseq(dds, contrast = c("treatment", "B", "control"))
+
+# Statistical comparison
+comparison <- compare_gsea(cond1, cond2, label1 = "Treatment A", label2 = "Treatment B")
+
+# Summary statistics
+comparison$summary
+#   Treatment A pathways: 230
+#   Treatment B pathways: 676
+#   Shared pathways: 130 (overlap: 43%)
+#   Direction concordance: 100%
+#   Jaccard similarity: 0.168
+
+# Visualize overlap
+plot_comparison(comparison, top_n = 30)
+```
+
+**Interpretation guidance:**
+
+For **biological replicates/clones**: High overlap (\>70%) and
+concordance (\>95%) expected. Low values suggest technical artifacts
+(integration sites, batch effects).
+
+For **different treatments**: Moderate overlap expected. Divergence
+indicates distinct mechanisms of action.
+
+  
+
+## Key Features
+
+|                          |         smartGSEA         |       Standard Workflow        |
+|--------------------------|:-------------------------:|:------------------------------:|
+| **Setup**                |    Zero configuration     | Organism DB, keytype, ontology |
+| **Code length**          |          1 line           |          20-50 lines           |
+| **P-value filtering**    |      ✅ FDR adjusted      |    ❌ Often nominal (wrong)    |
+| **Gene ID handling**     |  ✅ Automatic conversion  | ❌ Manual `bitr()` + debugging |
+| **Duplicate resolution** | ✅ Keeps highest \|rank\| |      ❌ Manual or ignored      |
+| **Comparison**           |    ✅ Built-in metrics    |      ❌ Custom scripting       |
+| **Non-model organisms**  |    ✅ CSV/GMT support     |    ❌ No standard solution     |
+| **Reproducibility**      |  ✅ Version-locked deps   |    ⚠️ Variable across labs     |
+
+  
+
+## Advanced Usage
+
+### Ranking Methods
+
+``` r
+# Default: log2 fold change (emphasizes effect size)
+results_lfc <- gsea_from_deseq(dds, contrast = ..., ranking = "log2fc")
+
+# Alternative: Wald statistic (emphasizes statistical confidence)
+results_wald <- gsea_from_deseq(dds, contrast = ..., ranking = "wald")
+```
+
+**When to use Wald:**  
+Finds more subtle but consistent changes. Typically yields 2-3× more
+pathways than log₂FC. Use when perturbation is mild or you want
+comprehensive pathway coverage.
+
+### Custom Pathways (Non-Model Organisms)
+
+``` r
+# Prepare pathway file (CSV format)
+# Columns: pathway, gene_id
+# Example: "DNA_repair", "gene_001"
+
+results <- gsea_from_deseq(
+  dds,
+  contrast = c("stage", "treatment", "control"),
+  custom_pathways = "my_pathways.csv"
+)
+```
+
+See [Custom Pathways
+vignette](https://ghsamuel.github.io/smartGSEA/articles/custom-pathways.html)
+for details.
+
+  
+
+## Supported Organisms
+
+| Organism  | Pattern    | Database        | Status |
+|-----------|------------|-----------------|:------:|
+| Human     | `ENSG*`    | `org.Hs.eg.db`  |   ✅   |
+| Mouse     | `ENSMUSG*` | `org.Mm.eg.db`  |   ✅   |
+| Rat       | `ENSRNOG*` | `org.Rn.eg.db`  |   ✅   |
+| Fly       | `FBgn*`    | `org.Dm.eg.db`  |   ✅   |
+| Zebrafish | `ENSDARG*` | `org.Dr.eg.db`  |   ✅   |
+| Worm      | `WBGene*`  | `org.Ce.eg.db`  |   ✅   |
+| Yeast     | `Y*`       | `org.Sc.sgd.db` |   ✅   |
+| Custom    | —          | CSV/GMT         |   ✅   |
+
+  
+
+## Documentation
+
+| Resource                                                                                  | Description                 |  Time  |
+|-------------------------------------------------------------------------------------------|-----------------------------|:------:|
+| [**Getting Started**](https://ghsamuel.github.io/smartGSEA/articles/quickstart.html)      | Basic workflow and examples | 5 min  |
+| [**Custom Pathways**](https://ghsamuel.github.io/smartGSEA/articles/custom-pathways.html) | Non-model organism support  | 10 min |
+| [**Function Reference**](https://ghsamuel.github.io/smartGSEA/reference/index.html)       | Complete API documentation  |   —    |
+
+  
+
+## Design Principles
+
+**1. Correctness over convenience**  
+Always filters on adjusted p-values. No shortcuts that compromise
+statistical validity.
+
+**2. Sensible defaults**  
+Works out-of-the-box for 95% of use cases. Advanced options available
+when needed.
+
+**3. Transparent methodology**  
+Every step logged. No black boxes. Reproducible across environments.
+
+**4. Interoperability**  
+Returns standard `gseaResult` objects. Compatible with clusterProfiler
+ecosystem.
+
+  
+
+## Methodological Notes
+
+### P-value Filtering
+
+smartGSEA uses a two-step approach:
+
+``` r
+# Step 1: Run GSEA without filtering (pvalueCutoff = 1.0)
+gsea_result <- gseGO(..., pvalueCutoff = 1.0)
+
+# Step 2: Filter on adjusted p-values
+filtered <- gsea_result@result[gsea_result@result$p.adjust < 0.05, ]
+```
+
+**Why:** clusterProfiler’s `pvalueCutoff` parameter filters on *nominal*
+p-values, even when `pAdjustMethod` is set. This is a common source of
+false positives.
+
+**Validation:** `max(results@result$p.adjust)` should be ≤ 0.05.
+
+### Gene ID Conversion
+
+Uses clusterProfiler’s `bitr()` with typical mapping success of 85-90%.
+Unmapped genes are reported but do not halt analysis.
+
+For duplicates (e.g., same ENTREZ ID mapped from multiple ENSEMBL IDs):
+keeps the gene with highest \|ranking value\|.
+
+  
+
+## Citation
+
+If smartGSEA contributes to your research, please cite:
+
+**smartGSEA:** \> Samuel GH (2026). smartGSEA: Simplified Gene Set
+Enrichment Analysis.  
+\> R package version 0.1.0. <https://github.com/ghsamuel/smartGSEA>
+
+**clusterProfiler** (the underlying engine): \> Yu G, Wang LG, Han Y, He
+QY (2012). “clusterProfiler: an R package for comparing biological
+themes among gene clusters.”  
+\> *OMICS: A Journal of Integrative Biology*, 16(5), 284-287.
+<doi:10.1089/omi.2011.0118>
+
+BibTeX
+
+``` bibtex
+@Manual{samuel2026smartgsea,
+  title = {smartGSEA: Simplified Gene Set Enrichment Analysis},
+  author = {Glady Hazitha Samuel},
+  year = {2026},
+  note = {R package version 0.1.0},
+  url = {https://github.com/ghsamuel/smartGSEA}
+}
+
+@Article{yu2012clusterprofiler,
+  title = {clusterProfiler: an R package for comparing biological themes among gene clusters},
+  author = {Guangchuang Yu and Li-Gen Wang and Yanyan Han and Qing-Yu He},
+  journal = {OMICS: A Journal of Integrative Biology},
+  year = {2012},
+  volume = {16},
+  number = {5},
+  pages = {284-287},
+  doi = {10.1089/omi.2011.0118}
+}
+```
+
+  
+
+## Contributing
+
+Contributions welcome! Please:
+
+1.  Open an issue before major changes
+2.  Follow existing code style
+3.  Add tests for new features
+4.  Update documentation
+
+[Report Bug](https://github.com/ghsamuel/smartGSEA/issues) · [Request
+Feature](https://github.com/ghsamuel/smartGSEA/issues) · [Submit
+PR](https://github.com/ghsamuel/smartGSEA/pulls)
+
+  
+
+------------------------------------------------------------------------
+
+**License:** MIT © [Glady Hazitha Samuel](https://github.com/ghsamuel)
+
+Built on
+[clusterProfiler](https://bioconductor.org/packages/clusterProfiler/) by
+Guangchuang Yu
+
+*Making GSEA accessible and correct, one analysis at a time*

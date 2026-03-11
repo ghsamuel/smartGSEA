@@ -1,0 +1,319 @@
+# Custom Pathways for Non-Model Organisms
+
+## Introduction
+
+easyGSEA supports custom pathway annotations for non-model organisms
+that don’t have pre-built annotation databases (org.\*.eg.db packages).
+
+This vignette shows you how to create and use custom pathway files.
+
+## When to Use Custom Pathways
+
+**Use custom pathways when:** - Working with non-model organisms (e.g.,
+*Bradysia*, emerging model systems) - Standard organism databases don’t
+exist - You have species-specific pathway annotations - You want to use
+custom gene sets (e.g., from literature)
+
+**Don’t need custom pathways if:** - Your organism is: human, mouse,
+rat, fly, zebrafish, worm, yeast - Use `organism = "auto"` instead
+(easier!)
+
+## File Formats
+
+easyGSEA accepts two formats:
+
+### CSV Format (Recommended)
+
+Simple two-column format:
+
+    pathway,gene_id
+    DNA_repair,gene_001
+    DNA_repair,gene_002
+    DNA_repair,gene_005
+    Cell_cycle,gene_003
+    Cell_cycle,gene_004
+    Cell_cycle,gene_007
+    Translation,gene_006
+    Translation,gene_008
+
+**Requirements:** - Header row with columns: `pathway` and `gene_id` -
+One gene per row - Genes can appear in multiple pathways - Pathway
+names: use underscores (not spaces) - Gene IDs: match your DESeq2
+rownames EXACTLY
+
+### GMT Format (Advanced)
+
+Standard gene set format:
+
+    DNA_repair  description gene_001    gene_002    gene_005
+    Cell_cycle  description gene_003    gene_004    gene_007
+    Translation description gene_006    gene_008
+
+**Format:** - Tab-separated - Column 1: Pathway name - Column 2:
+Description (can be “NA”) - Column 3+: Gene IDs
+
+## Creating Your Pathway File
+
+### Step 1: Identify Your Gene IDs
+
+Your gene IDs must match DESeq2 rownames:
+
+``` r
+library(DESeq2)
+
+# Check your gene IDs
+head(rownames(dds))
+# Example output: "Brad_gene_001" "Brad_gene_002" ...
+```
+
+### Step 2: Map Genes to Pathways
+
+**Option A: Use Orthology**
+
+Map your genes to a model organism, inherit pathways:
+
+``` r
+# 1. Find orthologs (e.g., using BLAST or OrthoFinder)
+# 2. Get pathways for model organism orthologs
+# 3. Transfer pathways to your genes
+
+# Example result:
+# Your_gene_001 → Drosophila FBgn123 → GO:0006281 (DNA repair)
+```
+
+**Option B: Literature-Based**
+
+Manually curate from publications:
+
+``` r
+# Create data frame
+pathways <- data.frame(
+  pathway = c("DNA_repair", "DNA_repair", "Cell_cycle"),
+  gene_id = c("Brad_gene_001", "Brad_gene_002", "Brad_gene_003")
+)
+
+# Save as CSV
+write.csv(pathways, "bradysia_pathways.csv", row.names = FALSE)
+```
+
+**Option C: Functional Annotation**
+
+Use annotation tools:
+
+``` r
+# Tools to consider:
+# - InterProScan (protein domains)
+# - eggNOG-mapper (orthology + GO terms)
+# - BLAST2GO (BLAST + GO mapping)
+# - Trinotate (for transcriptomes)
+
+# These generate GO terms you can convert to pathway file
+```
+
+## Example Workflow: Bradysia coprophila
+
+Real example from non-model organism research:
+
+### Step 1: Prepare Gene List
+
+``` r
+library(easyGSEA)
+library(DESeq2)
+
+# Load your DESeq2 object
+# Genes are named: Brad_01, Brad_02, etc.
+head(rownames(dds))
+```
+
+### Step 2: Create Pathway File
+
+Using orthology to Drosophila:
+
+``` r
+# Find Drosophila orthologs (external tool: OrthoFinder, BLAST)
+# Map Drosophila genes to GO terms
+# Transfer GO terms to Bradysia genes
+
+# Example pathway file:
+bradysia_go <- data.frame(
+  pathway = c(
+    "GO:0007049", "GO:0007049", "GO:0007049",  # Cell cycle
+    "GO:0006281", "GO:0006281",                 # DNA repair
+    "GO:0006412", "GO:0006412", "GO:0006412"   # Translation
+  ),
+  gene_id = c(
+    "Brad_001", "Brad_045", "Brad_089",
+    "Brad_012", "Brad_067",
+    "Brad_023", "Brad_098", "Brad_134"
+  )
+)
+
+# Save
+write.csv(bradysia_go, "bradysia_pathways.csv", row.names = FALSE)
+```
+
+### Step 3: Run GSEA
+
+``` r
+# Run with custom pathways
+results <- gsea_from_deseq(
+  dds = dds,
+  contrast = c("stage", "germline", "soma"),
+  custom_pathways = "bradysia_pathways.csv"
+)
+
+# Results are same format as standard GSEA
+nrow(results)
+head(results@result[, c("Description", "NES", "p.adjust")])
+```
+
+### Step 4: Visualize
+
+``` r
+# Same plotting functions work
+plot_gsea(results)
+
+# Compare developmental stages
+stage1 <- gsea_from_deseq(dds, 
+                         contrast = c("stage", "stage1", "control"),
+                         custom_pathways = "bradysia_pathways.csv")
+                         
+stage2 <- gsea_from_deseq(dds,
+                         contrast = c("stage", "stage2", "control"),
+                         custom_pathways = "bradysia_pathways.csv")
+
+comparison <- compare_gsea(stage1, stage2, 
+                          label1 = "Stage 1", label2 = "Stage 2")
+plot_comparison(comparison)
+```
+
+## Validation Tips
+
+### Check Your File
+
+``` r
+# Read your file
+pathways <- read.csv("my_pathways.csv")
+
+# Check format
+colnames(pathways)  # Should be: "pathway" "gene_id"
+
+# Check gene IDs match DESeq2
+gene_overlap <- intersect(pathways$gene_id, rownames(dds))
+coverage <- length(gene_overlap) / nrow(dds) * 100
+
+cat("Gene coverage:", round(coverage, 1), "%\n")
+# Aim for >70% coverage
+```
+
+### Pathway Size Guidelines
+
+``` r
+# Count genes per pathway
+pathway_sizes <- table(pathways$pathway)
+
+# Check distribution
+summary(as.numeric(pathway_sizes))
+
+# Recommendations:
+# - Minimum: 10 genes per pathway (smaller = unreliable)
+# - Maximum: 500 genes per pathway (larger = too broad)
+# - Ideal: 20-200 genes per pathway
+```
+
+### Common Issues
+
+**Issue 1: No pathways found**
+
+``` r
+# Check gene ID matching
+setdiff(pathways$gene_id[1:10], rownames(dds))
+# Should be empty. If not, IDs don't match!
+```
+
+**Issue 2: Very few pathways**
+
+- Need more pathway annotations
+- Try relaxing padj_cutoff: `padj_cutoff = 0.1`
+- Check if knockdown is strong enough
+
+**Issue 3: All pathways enriched**
+
+- Pathway file too small/broad
+- Integration artifacts dominating
+- Check with replicate comparisons
+
+## Tips for Different Organisms
+
+### For Transcriptome Assemblies
+
+``` r
+# Use Trinity gene IDs directly
+# GENE_001, GENE_002, etc.
+
+# Annotate with Trinotate
+# Extract GO terms
+# Convert to pathway file
+```
+
+### For Genome Annotations
+
+``` r
+# Use official gene IDs
+# e.g., LOC genes, maker annotations
+
+# Use eggNOG-mapper for GO terms
+# Download results
+# Parse into pathway file
+```
+
+### For Cell Lines / Variants
+
+``` r
+# Use human/mouse gene IDs
+# But create custom pathways for:
+# - Cell-type specific processes
+# - Disease-relevant pathways
+# - Literature-curated gene sets
+```
+
+## Resources
+
+**Orthology Tools:** - OrthoFinder:
+<https://github.com/davidemms/OrthoFinder> - eggNOG-mapper:
+<http://eggnog-mapper.embl.de/> - OrthoDB: <https://www.orthodb.org/>
+
+**Functional Annotation:** - InterProScan:
+<https://www.ebi.ac.uk/interpro/> - Trinotate:
+<https://github.com/Trinotate/Trinotate> - BLAST2GO:
+<https://www.blast2go.com/>
+
+**Gene Ontology:** - GO database: <http://geneontology.org/> - QuickGO:
+<https://www.ebi.ac.uk/QuickGO/>
+
+## Example Files
+
+See package GitHub for example pathway files: -
+`inst/extdata/bradysia_pathways.csv` -
+`inst/extdata/example_pathways.gmt`
+
+## Next Steps
+
+- See
+  [`vignette("quickstart")`](https://ghsamuel.github.io/easyGSEA/articles/quickstart.md)
+  for basic usage
+- See `vignette("comparison")` for comparing conditions
+- Check
+  [`?gsea_from_deseq`](https://ghsamuel.github.io/easyGSEA/reference/gsea_from_deseq.md)
+  for all parameters
+
+## Citation
+
+If you use easyGSEA with custom pathways, please cite:
+
+- **easyGSEA**: Samuel GH (2026). easyGSEA: Simplified Gene Set
+  Enrichment Analysis. R package version 0.1.0.
+
+- **clusterProfiler**: Yu G, Wang LG, Han Y, He QY (2012).
+  “clusterProfiler: an R package for comparing biological themes among
+  gene clusters.” OMICS, 16(5), 284-287.
