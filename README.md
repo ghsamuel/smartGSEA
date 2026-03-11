@@ -1,81 +1,64 @@
-# easyGSEA <img src="man/figures/logo.png" align="right" height="139" />
+<div align="center">
 
-<!-- badges: start -->
-![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)
-![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
-![R](https://img.shields.io/badge/R-%3E%3D4.0-blue)
-<!-- badges: end -->
+# easyGSEA
 
-<<<<<<< HEAD
-**Stop fighting with GSEA. Start getting results.**
-=======
-> **Stop fighting with GSEA. Start getting results.**
->>>>>>> ff02c5136e643a7463972cc96d35b1b451ef4397
+### Stop fighting with GSEA. Start getting results.
 
-easyGSEA eliminates the confusion and common mistakes in Gene Set Enrichment Analysis. One line of code. Correct p-values. Publication-ready plots.
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![R](https://img.shields.io/badge/R-%3E%3D4.0-blue)](https://www.r-project.org/)
+
+[Documentation](https://ghsamuel.github.io/easyGSEA/) • [Getting Started](https://ghsamuel.github.io/easyGSEA/articles/quickstart.html) • [Report Bug](https://github.com/ghsamuel/easyGSEA/issues)
+
+</div>
 
 ---
-<<<<<<< HEAD
+
+## Overview
+
+easyGSEA eliminates the confusion and common mistakes in Gene Set Enrichment Analysis. **One line of code. Correct p-values. Publication-ready plots.**
+```r
+# That's it. Really.
+results <- gsea_from_deseq(dds, contrast = c("condition", "treated", "control"))
+```
+
+<br>
 
 ## The Problem
 
 Standard GSEA workflows are error-prone:
 
-- **P-value confusion** — Filtering on nominal instead of adjusted p-values creates false positives
-- **Complex preprocessing** — 20+ lines of gene ID conversion and setup
-- **No comparison tools** — Manually comparing conditions is tedious
-- **Cryptic errors** — Debugging failures wastes hours
+| Issue | Impact |
+|-------|--------|
+| **P-value confusion** | Filtering on nominal p-values → hundreds of false positives |
+| **Complex preprocessing** | 20+ lines of gene ID conversion and setup |
+| **No comparison tools** | Manually comparing conditions is tedious |
+| **Cryptic errors** | Hours wasted debugging |
 
-Sound familiar?
-
----
+<br>
 
 ## The Solution
-```r
-# One line. That's it.
-results <- gsea_from_deseq(dds, contrast = c("condition", "treated", "control"))
+
+**What just happened in that one line:**
+```mermaid
+graph LR
+    A[DESeq2 object] --> B[Auto-detect organism]
+    B --> C[Convert gene IDs]
+    C --> D[Rank by log2FC]
+    D --> E[Run GSEA]
+    E --> F[Filter on adjusted p-values]
+    F --> G[Return results]
 ```
 
-**What just happened:**
-- Auto-detected your organism (human/mouse/rat/etc.)
-- Converted gene IDs automatically
-- Ranked genes by log2 fold change
-- **Filtered on adjusted p-values** (the right way!)
-- Found significant pathways
+✓ Auto-detected your organism (human/mouse/rat/etc.)  
+✓ Converted gene IDs automatically  
+✓ Ranked genes by log2 fold change  
+✓ **Filtered on adjusted p-values** (the right way!)  
+✓ Found significant pathways  
 
----
-=======
->>>>>>> ff02c5136e643a7463972cc96d35b1b451ef4397
+<br>
 
-## 🎯 The Problem
-
-Standard GSEA workflows are a minefield:
-
-- ❌ **Everyone makes the p-value mistake** - Filtering on nominal p-values creates hundreds of false positives
-- ❌ **20+ lines of preprocessing** - Gene ID conversion, ranking, organism setup
-- ❌ **No standard way to compare** - Clones, treatments, time points—all manual
-- ❌ **Cryptic errors** - "unused argument", "mapping failed", mysterious crashes
-
-Sound familiar?
-
----
-
-## ✨ The Solution
-```r
-# One line. That's it.
-results <- gsea_from_deseq(dds, contrast = c("condition", "treated", "control"))
-```
-
-**What just happened:**
-- ✅ Auto-detected your organism (human/mouse/rat/etc.)
-- ✅ Converted gene IDs automatically
-- ✅ Ranked genes by log2FC
-- ✅ **Filtered on adjusted p-values** (the right way!)
-- ✅ Found 247 significant pathways
-
----
-
-## 📦 Installation
+## Installation
 ```r
 # Install from GitHub
 devtools::install_github("ghsamuel/easyGSEA")
@@ -85,17 +68,11 @@ BiocManager::install("org.Hs.eg.db")  # Human
 BiocManager::install("org.Mm.eg.db")  # Mouse
 ```
 
----
+<br>
 
-<<<<<<< HEAD
 ## Quick Start
 
 ### Basic GSEA
-=======
-## 🚀 Quick Start
-
-### Basic GSEA (3 lines)
->>>>>>> ff02c5136e643a7463972cc96d35b1b451ef4397
 ```r
 library(easyGSEA)
 
@@ -117,182 +94,128 @@ comparison <- compare_gsea(m1_gsea, m2_gsea, label1 = "M1", label2 = "M2")
 
 # See statistics
 comparison$summary
-<<<<<<< HEAD
 #   M1 pathways: 230
 #   M2 pathways: 676
 #   Common: 130
 #   Jaccard: 0.168
 #   Concordance: 100%
-=======
-#   Metric                    Value
-#   M1 total pathways         230
-#   M2 total pathways         676
-#   Common pathways           130
-#   Jaccard similarity        0.168
-#   Direction concordance (%) 100
->>>>>>> ff02c5136e643a7463972cc96d35b1b451ef4397
 
 # Plot side-by-side
 plot_comparison(comparison)
 ```
 
----
+<br>
 
-<<<<<<< HEAD
 ## Features
+
+<table>
+<tr>
+<td width="50%">
 
 ### Core Functionality
 
-| Feature | easyGSEA | Standard Workflow |
-|---------|----------|-------------------|
-| **Lines of code** | 1 | 20-50 |
-| **P-value filtering** | Always adjusted | Usually wrong |
-| **Organism detection** | Automatic | Manual setup |
-| **Gene ID conversion** | Handled | You debug it |
-| **Comparison** | Built-in | Write it yourself |
-| **Non-model organisms** | Supported | Good luck |
+| Feature | easyGSEA | Standard |
+|---------|----------|----------|
+| Lines of code | **1** | 20-50 |
+| P-value filtering | **Always adjusted** | Usually wrong |
+| Organism detection | **Automatic** | Manual |
+| Gene ID conversion | **Handled** | You debug it |
+| Comparison | **Built-in** | DIY |
+| Non-model organisms | **Supported** | Good luck |
+
+</td>
+<td width="50%">
 
 ### What You Get
 
-**Correct statistics** — Always uses adjusted p-values (FDR < 0.05)
+**Correct statistics**  
+Always uses adjusted p-values (FDR < 0.05)
 
-**Auto-detection** — Recognizes human, mouse, rat, fly, zebrafish, worm, yeast
+**Auto-detection**  
+Recognizes 7+ model organisms
 
-**Custom pathways** — Works with any organism (CSV or GMT format)
+**Custom pathways**  
+Works with any organism (CSV/GMT)
 
-**Easy comparison** — Overlap, concordance, Jaccard index built-in
+**Easy comparison**  
+Overlap, concordance, Jaccard index
 
-**Publication plots** — Professional figures ready for papers
+**Publication plots**  
+Professional figures ready to go
 
-**Clear documentation** — Examples that actually work
+**Clear docs**  
+Examples that actually work
 
----
+</td>
+</tr>
+</table>
 
-## Learn More
+<br>
 
-- [Getting Started](https://ghsamuel.github.io/easyGSEA/articles/quickstart.html) — 5-minute tutorial
-- [Custom Pathways](https://ghsamuel.github.io/easyGSEA/articles/custom-pathways.html) — For non-model organisms
-- [Function Reference](https://ghsamuel.github.io/easyGSEA/reference/index.html) — Complete documentation
+## Documentation
 
----
+| Resource | Description |
+|----------|-------------|
+| [**Getting Started**](https://ghsamuel.github.io/easyGSEA/articles/quickstart.html) | 5-minute tutorial |
+| [**Custom Pathways**](https://ghsamuel.github.io/easyGSEA/articles/custom-pathways.html) | For non-model organisms |
+| [**Function Reference**](https://ghsamuel.github.io/easyGSEA/reference/index.html) | Complete API documentation |
+
+<br>
 
 ## Why This Exists
 
-I got tired of:
-- Debugging the same GSEA mistakes in every analysis
-- Seeing papers with 1500+ "significant" pathways (nominal p-values!)
-- Writing 50 lines of code to compare two clones
-- Helping people set up GSEA for the 100th time
+> Debugging the same GSEA mistakes in every analysis, seeing papers with 1500+ "significant" pathways (nominal p-values!), writing 50 lines of code to compare two clones, and helping people set up GSEA for the 100th time.
+> 
+> So I built the tool I wished existed.
 
-So I built the tool I wished existed.
+<br>
 
----
+## Contributing
 
-## Found a Bug?
+Found a bug? Have a feature request?
 
-[Open an issue](https://github.com/ghsamuel/easyGSEA/issues) or submit a PR!
+[**Open an issue**](https://github.com/ghsamuel/easyGSEA/issues) or submit a PR!
 
-=======
-## 🎨 Features
+<br>
 
-### Core Functionality
-
-| Feature | easyGSEA | Standard Workflow |
-|---------|----------|-------------------|
-| **Lines of code** | 1 | 20-50 |
-| **P-value filtering** | ✅ Always adjusted | ❌ Usually wrong |
-| **Organism detection** | ✅ Automatic | ❌ Manual setup |
-| **Gene ID conversion** | ✅ Handled | ❌ You debug it |
-| **Comparison** | ✅ Built-in | ❌ Write it yourself |
-| **Non-model organisms** | ✅ Supported | ❌ Good luck |
-
-### What You Get
-
-✅ **Correct statistics** - Always uses adjusted p-values (FDR < 0.05)  
-✅ **Auto-detection** - Recognizes human, mouse, rat, fly, zebrafish, worm, yeast  
-✅ **Custom pathways** - Works with any organism (CSV or GMT format)  
-✅ **Easy comparison** - Overlap, concordance, Jaccard index—all automatic  
-✅ **Publication plots** - Professional dotplots, barplots, comparison figures  
-✅ **Clear documentation** - Examples that actually work
-
----
-
-## 📚 Learn More
-
-- **[Getting Started](https://ghsamuel.github.io/easyGSEA/articles/quickstart.html)** - 5-minute tutorial
-- **[Custom Pathways](https://ghsamuel.github.io/easyGSEA/articles/custom-pathways.html)** - Non-model organisms
-- **[Function Reference](https://ghsamuel.github.io/easyGSEA/reference/index.html)** - Complete documentation
-
----
-
-## 💡 Why This Exists
-
-I got tired of:
-- Debugging the same GSEA mistakes in every analysis
-- Seeing papers with 1500+ "significant" pathways (nominal p-values!)
-- Writing 50 lines of code to compare two clones
-- Helping people set up GSEA for the 100th time
-
-So I built the tool I wished existed.
-
----
-
-## 🐛 Found a Bug?
-
-[Open an issue](https://github.com/ghsamuel/easyGSEA/issues) or submit a PR!
-
----
-
-## 📖 Citation
+## Citation
 
 If easyGSEA helps your research, please cite:
-```
-Samuel GH (2026). easyGSEA: Simplified Gene Set Enrichment Analysis. 
-R package version 0.1.0. https://github.com/ghsamuel/easyGSEA
+```bibtex
+@Manual{easyGSEA,
+  title = {easyGSEA: Simplified Gene Set Enrichment Analysis},
+  author = {Glady Hazitha Samuel},
+  year = {2026},
+  note = {R package version 0.1.0},
+  url = {https://github.com/ghsamuel/easyGSEA}
+}
 ```
 
 **Also cite clusterProfiler** (the engine under the hood):
+```bibtex
+@Article{clusterProfiler,
+  title = {clusterProfiler: an R package for comparing biological themes among gene clusters},
+  author = {Guangchuang Yu and Li-Gen Wang and Yanyan Han and Qing-Yu He},
+  journal = {OMICS},
+  year = {2012},
+  volume = {16},
+  number = {5},
+  pages = {284-287}
+}
 ```
-Yu G, Wang LG, Han Y, He QY (2012). "clusterProfiler: an R package for 
-comparing biological themes among gene clusters." OMICS, 16(5), 284-287.
-```
+
+<br>
 
 ---
 
-## 📜 License
+<div align="center">
+
+### License
 
 MIT © [Glady Hazitha Samuel](https://github.com/ghsamuel)
 
->>>>>>> ff02c5136e643a7463972cc96d35b1b451ef4397
----
+Built on the excellent [clusterProfiler](https://bioconductor.org/packages/clusterProfiler/) by Guangchuang Yu
 
-## 🙏 Acknowledgments
+**Inspired by everyone who's ever struggled with GSEA** 
 
-<<<<<<< HEAD
-If easyGSEA helps your research, please cite:
-```
-Samuel GH (2026). easyGSEA: Simplified Gene Set Enrichment Analysis. 
-R package version 0.1.0. https://github.com/ghsamuel/easyGSEA
-```
-
-**Also cite clusterProfiler** (the engine under the hood):
-```
-Yu G, Wang LG, Han Y, He QY (2012). "clusterProfiler: an R package for 
-comparing biological themes among gene clusters." OMICS, 16(5), 284-287.
-```
-
----
-
-## License
-
-MIT © [Glady Hazitha Samuel](https://github.com/ghsamuel)
-
----
-
-## Acknowledgments
-
-=======
->>>>>>> ff02c5136e643a7463972cc96d35b1b451ef4397
-Built on the excellent [clusterProfiler](https://bioconductor.org/packages/clusterProfiler/) by Guangchuang Yu.
-
-Inspired by everyone who's ever struggled with GSEA (so... everyone).
+</div>
