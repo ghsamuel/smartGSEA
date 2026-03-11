@@ -2,28 +2,34 @@ url: https://ghsamuel.github.io/easyGSEA/
 
 template:
   bootstrap: 5
-  bootswatch: united
+  bootswatch: flatly
   bslib:
-    primary: "#0051BA"
-    border-radius: 0.5rem
-    font_scale: 1.1
+    primary: "#2C3E50"
+    secondary: "#34495E"
+    success: "#27AE60"
+    danger: "#E74C3C"
+    base_font:
+      google: "Source Sans Pro"
+    heading_font:
+      google: "Montserrat"
+    code_font:
+      google: "Source Code Pro"
+    font_scale: 1.05
 
 home:
   title: easyGSEA • Simplified Gene Set Enrichment Analysis
   description: >
-    User-friendly wrapper for GSEA that handles DESeq2 results directly,
-    auto-detects organisms, and always uses adjusted p-values correctly.
+    One-line GSEA from DESeq2 results. Auto-detects organisms,
+    uses correct p-values, generates publication-ready plots.
   sidebar:
     structure: [links, license, citation, authors, dev]
 
 navbar:
+  bg: primary
   structure:
     left:  [intro, reference, articles]
     right: [search, github]
   components:
-    home:
-      icon: fas fa-home fa-lg
-      href: index.html
     reference:
       text: Reference
       href: reference/index.html
@@ -32,23 +38,34 @@ navbar:
       menu:
       - text: Getting Started
         href: articles/quickstart.html
+      - text: Custom Pathways
+        href: articles/custom-pathways.html
     github:
       icon: fab fa-github fa-lg
       href: https://github.com/ghsamuel/easyGSEA
+      aria-label: View source on GitHub
 
 reference:
-- title: Main Functions
-  desc: Core GSEA workflow functions
+- title: Core Functions
+  desc: Main workflow functions
   contents:
   - gsea_from_deseq
   - compare_gsea
 
-- title: Plotting
-  desc: Visualization functions
+- title: Visualization
+  desc: Plotting and output
   contents:
   - plot_gsea
   - plot_comparison
   - plot_all
+
+- title: Utilities
+  desc: Helper functions
+  contents:
+  - starts_with("run_gsea")
+  - detect_organism
+  - get_orgdb
+  - rank_genes
 
 footer:
   structure:
