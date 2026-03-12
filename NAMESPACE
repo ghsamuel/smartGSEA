@@ -2,6 +2,8 @@
 
 export("%>%")
 export(compare_gsea)
+export(generate_gsea_html_report)
+export(generate_gsea_report)
 export(gsea_from_deseq)
 export(plot_all)
 export(plot_comparison)

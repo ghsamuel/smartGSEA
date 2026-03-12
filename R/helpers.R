@@ -1,4 +1,4 @@
-# Internal helper functions for easyGSEA
+# Internal helper functions for smartGSEA
 # Not exported to users
 
 # Suppress R CMD check notes about dplyr/ggplot2 variables

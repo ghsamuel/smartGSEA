@@ -153,3 +153,79 @@ read_custom_pathways <- function(filepath) {
 
   return(term2gene)
 }
+
+
+#' Run GSEA with statistics tracking (internal)
+#' @noRd
+run_gsea_standard_with_stats <- function(res_df, organism, ranking, padj_cutoff, ...) {
+
+  ranking_col <- ifelse(ranking == "log2fc", "log2FoldChange", "stat")
+
+  # Get organism database
+  orgdb_name <- get_orgdb(organism)
+  orgdb <- get(orgdb_name, envir = loadNamespace(orgdb_name))
+
+  # Rank genes
+  res_clean <- rank_genes(res_df, ranking_col)
+  n_genes_input <- nrow(res_clean)
+
+  # Convert gene IDs
+  message("Converting gene IDs...")
+  res_ids <- clusterProfiler::bitr(
+    res_clean$gene_id_clean,
+    fromType = "ENSEMBL",
+    toType = "ENTREZID",
+    OrgDb = orgdb
+  )
+
+  # Calculate mapping rate
+  mapping_rate <- nrow(res_ids) / n_genes_input
+
+  # Merge
+  res_merged <- res_clean %>%
+    dplyr::left_join(res_ids, by = c("gene_id_clean" = "ENSEMBL")) %>%
+    dplyr::filter(!is.na(ENTREZID))
+
+  # Handle duplicates
+  res_merged <- res_merged %>%
+    dplyr::group_by(ENTREZID) %>%
+    dplyr::arrange(dplyr::desc(abs(!!rlang::sym(ranking_col)))) %>%
+    dplyr::slice(1) %>%
+    dplyr::ungroup()
+
+  n_genes_final <- nrow(res_merged)
+
+  # Create ranked gene list
+  gene_list <- res_merged[[ranking_col]]
+  names(gene_list) <- res_merged$ENTREZID
+  gene_list <- sort(gene_list, decreasing = TRUE)
+
+  message("Running GSEA on ", length(gene_list), " genes...")
+
+  # Run GSEA
+  gsea_all <- clusterProfiler::gseGO(
+    geneList = gene_list,
+    OrgDb = orgdb,
+    ont = "BP",
+    pvalueCutoff = 1.0,
+    pAdjustMethod = "BH",
+    ...
+  )
+
+  # Filter
+  if (nrow(gsea_all) > 0) {
+    gsea_result <- gsea_all
+    gsea_result@result <- gsea_all@result %>%
+      dplyr::filter(p.adjust < padj_cutoff)
+  } else {
+    gsea_result <- gsea_all
+  }
+
+  message("Found ", nrow(gsea_result), " significant pathways (padj < ", padj_cutoff, ")")
+
+  return(list(
+    gsea_result = gsea_result,
+    n_genes_analyzed = n_genes_final,
+    mapping_rate = mapping_rate
+  ))
+}

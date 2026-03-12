@@ -23,7 +23,13 @@ Imports:
     utils,
     stats,
     ggplot2,
-    enrichplot
+    enrichplot,
+    rmarkdown,
+    DT, 
+    plotly,
+    stringr,
+    scales,
+    base64enc
 Suggests:
     org.Hs.eg.db,
     org.Mm.eg.db,
