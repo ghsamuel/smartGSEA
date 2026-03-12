@@ -5,5 +5,5 @@ Generate HTML for top pathways section
 ## Usage
 
 ``` r
-generate_top_pathways_html(result_df, n = 5)
+generate_top_pathways_html(result_df, n = 5, organism = "human")
 ```
