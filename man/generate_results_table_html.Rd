@@ -4,7 +4,7 @@
 \alias{generate_results_table_html}
 \title{Generate HTML table for all results}
 \usage{
-generate_results_table_html(result_df)
+generate_results_table_html(result_df, organism = "human")
 }
 \description{
 Generate HTML table for all results

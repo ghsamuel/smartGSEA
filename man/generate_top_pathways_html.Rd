@@ -4,7 +4,7 @@
 \alias{generate_top_pathways_html}
 \title{Generate HTML for top pathways section}
 \usage{
-generate_top_pathways_html(result_df, n = 5)
+generate_top_pathways_html(result_df, n = 5, organism = "human")
 }
 \description{
 Generate HTML for top pathways section
