@@ -14,7 +14,7 @@
 [![MIT License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
 [![R ≥ 4.0](https://img.shields.io/badge/R-%E2%89%A5%204.0-276DC3?style=flat-square&logo=r)](https://www.r-project.org/)
 
-[Documentation](https://ghsamuel.github.io/smartGSEA/) · [Quick Start](https://ghsamuel.github.io/smartGSEA/articles/quickstart.html) · [Report Issue](https://github.com/ghsamuel/smartGSEA/issues)
+[Documentation](https://ghsamuel.github.io/smartGSEA/) · [Quick Start](#quick-start) · [Example Report](https://ghsamuel.github.io/smartGSEA/example_report.html) · [Report Issue](https://github.com/ghsamuel/smartGSEA/issues)
 
 <br>
 
@@ -255,13 +255,12 @@ See [Custom Pathways vignette](https://ghsamuel.github.io/smartGSEA/articles/cus
 <br>
 
 ## Documentation
-
 | Resource | Description | Time |
 |----------|-------------|:----:|
 | [**Getting Started**](https://ghsamuel.github.io/smartGSEA/articles/quickstart.html) | Basic workflow and examples | 5 min |
 | [**Custom Pathways**](https://ghsamuel.github.io/smartGSEA/articles/custom-pathways.html) | Non-model organism support | 10 min |
+| [**Example Report**](https://ghsamuel.github.io/smartGSEA/example_report.html) | Interactive HTML output demo | — |
 | [**Function Reference**](https://ghsamuel.github.io/smartGSEA/reference/index.html) | Complete API documentation | — |
-
 <br>
 
 ## Design Principles
