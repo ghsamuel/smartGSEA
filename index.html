@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>easyGSEA • Simplified Gene Set Enrichment Analysis • smartGSEA</title>
+<title>smartGSEA • Streamlined Gene Set Enrichment Analysis • smartGSEA</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
@@ -13,7 +13,7 @@
 <link href="deps/Montserrat-0.4.10/font.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="easyGSEA • Simplified Gene Set Enrichment Analysis">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="smartGSEA • Streamlined Gene Set Enrichment Analysis">
 <meta name="description" content="One-line GSEA from DESeq2 results. Auto-detects organisms, uses correct p-values, generates publication-ready plots.
 ">
 <meta property="og:description" content="One-line GSEA from DESeq2 results. Auto-detects organisms, uses correct p-values, generates publication-ready plots.
@@ -44,12 +44,13 @@
     <li><a class="dropdown-item" href="articles/custom-pathways.html">Custom Pathways</a></li>
   </ul>
 </li>
+<li class="nav-item"><a class="nav-link" href="example_report.html"><span class="fa fa-chart-bar"></span> Example Report</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/ghsamuel/easyGSEA" aria-label="View source on GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/ghsamuel/smartGSEA" aria-label="View source on GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -68,7 +69,7 @@
 <p><strong>One function. Correct statistics. Zero configuration.</strong></p>
 <p><br></p>
 <p><a href="https://lifecycle.r-lib.org/articles/stages.html" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange?style=flat-square" alt="Lifecycle"></a> <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square" alt="MIT License"></a> <a href="https://www.r-project.org/" class="external-link"><img src="https://img.shields.io/badge/R-%E2%89%A5%204.0-276DC3?style=flat-square&amp;logo=r" alt="R ≥ 4.0"></a></p>
-<p><a href="https://ghsamuel.github.io/smartGSEA/" class="external-link">Documentation</a> · <a href="https://ghsamuel.github.io/smartGSEA/articles/quickstart.html" class="external-link">Quick Start</a> · <a href="https://github.com/ghsamuel/smartGSEA/issues" class="external-link">Report Issue</a></p>
+<p><a href="https://ghsamuel.github.io/smartGSEA/">Documentation</a> · <a href="#quick-start">Quick Start</a> · <a href="https://ghsamuel.github.io/smartGSEA/example_report.html">Example Report</a> · <a href="https://github.com/ghsamuel/smartGSEA/issues" class="external-link">Report Issue</a></p>
 <p><br></p>
 </div>
 </div>
@@ -169,7 +170,7 @@ CSV/GMT support for non-model organisms</p>
 <h3 id="basic-analysis">Basic Analysis<a class="anchor" aria-label="anchor" href="#basic-analysis"></a>
 </h3>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ghsamuel.github.io/smartGSEA" class="external-link">smartGSEA</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ghsamuel.github.io/smartGSEA">smartGSEA</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Run GSEA</span></span>
 <span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gsea_from_deseq.html">gsea_from_deseq</a></span><span class="op">(</span><span class="va">dds</span>, contrast <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"treatment"</span>, <span class="st">"drug"</span>, <span class="st">"vehicle"</span><span class="op">)</span><span class="op">)</span></span>
@@ -297,7 +298,7 @@ Finds more subtle but consistent changes. Typically yields 2-3× more pathways t
 <span>  contrast <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"stage"</span>, <span class="st">"treatment"</span>, <span class="st">"control"</span><span class="op">)</span>,</span>
 <span>  custom_pathways <span class="op">=</span> <span class="st">"my_pathways.csv"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>See <a href="https://ghsamuel.github.io/smartGSEA/articles/custom-pathways.html" class="external-link">Custom Pathways vignette</a> for details.</p>
+<p>See <a href="https://ghsamuel.github.io/smartGSEA/articles/custom-pathways.html">Custom Pathways vignette</a> for details.</p>
 <p><br></p>
 </div>
 </div>
@@ -382,17 +383,22 @@ Finds more subtle but consistent changes. Typically yields 2-3× more pathways t
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td><a href="https://ghsamuel.github.io/smartGSEA/articles/quickstart.html" class="external-link"><strong>Getting Started</strong></a></td>
+<td><a href="https://ghsamuel.github.io/smartGSEA/articles/quickstart.html"><strong>Getting Started</strong></a></td>
 <td>Basic workflow and examples</td>
 <td align="center">5 min</td>
 </tr>
 <tr class="even">
-<td><a href="https://ghsamuel.github.io/smartGSEA/articles/custom-pathways.html" class="external-link"><strong>Custom Pathways</strong></a></td>
+<td><a href="https://ghsamuel.github.io/smartGSEA/articles/custom-pathways.html"><strong>Custom Pathways</strong></a></td>
 <td>Non-model organism support</td>
 <td align="center">10 min</td>
 </tr>
 <tr class="odd">
-<td><a href="https://ghsamuel.github.io/smartGSEA/reference/index.html" class="external-link"><strong>Function Reference</strong></a></td>
+<td><a href="https://ghsamuel.github.io/smartGSEA/example_report.html"><strong>Example Report</strong></a></td>
+<td>Interactive HTML output demo</td>
+<td align="center">—</td>
+</tr>
+<tr class="even">
+<td><a href="https://ghsamuel.github.io/smartGSEA/reference/index.html"><strong>Function Reference</strong></a></td>
 <td>Complete API documentation</td>
 <td align="center">—</td>
 </tr>

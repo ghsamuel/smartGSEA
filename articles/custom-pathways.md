@@ -300,11 +300,11 @@ See package GitHub for example pathway files: -
 ## Next Steps
 
 - See
-  [`vignette("quickstart")`](https://ghsamuel.github.io/easyGSEA/articles/quickstart.md)
+  [`vignette("quickstart")`](https://ghsamuel.github.io/smartGSEA/articles/quickstart.md)
   for basic usage
 - See `vignette("comparison")` for comparing conditions
 - Check
-  [`?gsea_from_deseq`](https://ghsamuel.github.io/easyGSEA/reference/gsea_from_deseq.md)
+  [`?gsea_from_deseq`](https://ghsamuel.github.io/smartGSEA/reference/gsea_from_deseq.md)
   for all parameters
 
 ## Citation

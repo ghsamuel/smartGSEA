@@ -10,12 +10,13 @@
 
 [![Lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange?style=flat-square)](https://lifecycle.r-lib.org/articles/stages.html)
 [![MIT
-License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](https://ghsamuel.github.io/easyGSEA/LICENSE)
+License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](https://ghsamuel.github.io/smartGSEA/LICENSE)
 [![R ≥
 4.0](https://img.shields.io/badge/R-%E2%89%A5%204.0-276DC3?style=flat-square&logo=r)](https://www.r-project.org/)
 
 [Documentation](https://ghsamuel.github.io/smartGSEA/) · [Quick
-Start](https://ghsamuel.github.io/smartGSEA/articles/quickstart.html) ·
+Start](#quick-start) · [Example
+Report](https://ghsamuel.github.io/smartGSEA/example_report.html) ·
 [Report Issue](https://github.com/ghsamuel/smartGSEA/issues)
 
   
@@ -182,11 +183,12 @@ for details.
 
 ## Documentation
 
-| Resource                                                                                  | Description                 |  Time  |
-|-------------------------------------------------------------------------------------------|-----------------------------|:------:|
-| [**Getting Started**](https://ghsamuel.github.io/smartGSEA/articles/quickstart.html)      | Basic workflow and examples | 5 min  |
-| [**Custom Pathways**](https://ghsamuel.github.io/smartGSEA/articles/custom-pathways.html) | Non-model organism support  | 10 min |
-| [**Function Reference**](https://ghsamuel.github.io/smartGSEA/reference/index.html)       | Complete API documentation  |   —    |
+| Resource                                                                                  | Description                  |  Time  |
+|-------------------------------------------------------------------------------------------|------------------------------|:------:|
+| [**Getting Started**](https://ghsamuel.github.io/smartGSEA/articles/quickstart.html)      | Basic workflow and examples  | 5 min  |
+| [**Custom Pathways**](https://ghsamuel.github.io/smartGSEA/articles/custom-pathways.html) | Non-model organism support   | 10 min |
+| [**Example Report**](https://ghsamuel.github.io/smartGSEA/example_report.html)            | Interactive HTML output demo |   —    |
+| [**Function Reference**](https://ghsamuel.github.io/smartGSEA/reference/index.html)       | Complete API documentation   |   —    |
 
   
 
@@ -309,31 +311,40 @@ Guangchuang Yu
 
 Main workflow functions
 
-- [`gsea_from_deseq()`](https://ghsamuel.github.io/easyGSEA/reference/gsea_from_deseq.md)
-  : Run GSEA from DESeq2 Results
-- [`compare_gsea()`](https://ghsamuel.github.io/easyGSEA/reference/compare_gsea.md)
+- [`gsea_from_deseq()`](https://ghsamuel.github.io/smartGSEA/reference/gsea_from_deseq.md)
+  : Run GSEA from DESeq2 Results (with automatic reporting)
+- [`compare_gsea()`](https://ghsamuel.github.io/smartGSEA/reference/compare_gsea.md)
   : Compare GSEA Results Between Two Conditions
 
 ## Visualization
 
 Plotting and output
 
-- [`plot_gsea()`](https://ghsamuel.github.io/easyGSEA/reference/plot_gsea.md)
+- [`plot_gsea()`](https://ghsamuel.github.io/smartGSEA/reference/plot_gsea.md)
   : Plot GSEA Results
-- [`plot_comparison()`](https://ghsamuel.github.io/easyGSEA/reference/plot_comparison.md)
+- [`plot_comparison()`](https://ghsamuel.github.io/smartGSEA/reference/plot_comparison.md)
   : Plot Comparison Between Two GSEA Results
-- [`plot_all()`](https://ghsamuel.github.io/easyGSEA/reference/plot_all.md)
+- [`plot_all()`](https://ghsamuel.github.io/smartGSEA/reference/plot_all.md)
   : Plot All Standard GSEA Visualizations
 
 ## Utilities
 
 Helper functions
 
+## Internal
+
+Internal functions (not for end users)
+
+- [`generate_gsea_html_report()`](https://ghsamuel.github.io/smartGSEA/reference/generate_gsea_html_report.md)
+  : Generate Professional HTML GSEA Report
+- [`generate_gsea_report()`](https://ghsamuel.github.io/smartGSEA/reference/generate_gsea_report.md)
+  : Generate GSEA Report
+
 # Articles
 
 ### All vignettes
 
 - [Custom Pathways for Non-Model
-  Organisms](https://ghsamuel.github.io/easyGSEA/articles/custom-pathways.md):
+  Organisms](https://ghsamuel.github.io/smartGSEA/articles/custom-pathways.md):
 - [Getting Started with
-  easyGSEA](https://ghsamuel.github.io/easyGSEA/articles/quickstart.md):
+  easyGSEA](https://ghsamuel.github.io/smartGSEA/articles/quickstart.md):
